@@ -83,11 +83,7 @@ print(html.info().get_content_charset())
 >   * html.parser - HTML 파서, 가장 많이 사용
 <br/>
 
-### Tag 찾기: find, find_all
-> * Tag 위주 찾기, 클래스나 ID로도 찾을 수 있지만 이 경우는 select가 더 편해보임
-> * find : 같은 조건 중 가장 먼저 찾은 하나만 추출
-> * find_all : 같은 조건 모두 추출
-> * find 계열에서 class를 지칭할 때 .을 사용하지 않음.
+### 파일 읽기
 ```python
 from bs4 import BeautifulSoup
 
@@ -95,35 +91,50 @@ with open('data/Test05.html', 'r', encoding='utf-8') as html_file:
     html = html_file.read()
     soup = BeautifulSoup(html, 'html.parser')
     
-    print(soup)                                               # 전체 출력
-    
-    print(soup.find('li', {'id': 'c'}).text)                  # Tag와 ID 조합 검색
-    print(soup.find('ul', {'class': 'greet'}).string)         # Tag와 class 조합 검색(클래스명 앞에 .을 붙이지 않음)
-    print(soup.find('ul', 'greet').get_text())                # 위와 같은 결과(대상을 class에서 'greet'가 있는것을 참조)
-    
-    print(f'{soup.body.ul["id"]}')                            # 해당 tag의 id값 출력, class도 동일
-    
-    div_list = soup.findAll('div')                            # findAll도 유사하게 동작
-    for div in div_list:                                      # list형식으로 하나를 찾으려면 div_list[0] 이런 식으로 찾아야 함
-        for span in div.find_all('span'):
-            print(span.text)
-            
-    span_text = soup.body.div.span.text                       # Tag만으로 추출(head, body는 최상위 tag)
-    
-    for li in soup.body.ul.li.next_siblings:                  # Tag로 찾아서 다음 형제들 찾기
-        print(li)
-    for li in soup.find('li', {'id': 'c'}).previous_siblings: # Tag + ID로 이전 형제들 찾기
-        print(li)
-        
-    last_price = soup.find_all('p')[-1].find('span')          # 아래 5개의 last_price는 모두 동일한 값을 찾는다
-    last_price = soup.find_all('p')[-1].find_all('span')[0]
-    last_price = soup.find_all('p')[-1].find_all('span', 'price')[0]            # price는 class
-    last_price = soup.find_all('p')[-1].find_all('span', {'class': 'price'})[0]
-    last_price = soup.find_all('span', {'class': 'price'})[-1]
-    
-    p_text = [p.text.strip() for p in soup.find_all('p')]     # find_all 결과물 처리 방법
-    
-    p_and_img = soup.find_all(['p','img'])                    # 여러 태그를 검색할 경우에는 리스트 형태로 인자를 제공
+    print(soup)                            # 전체 출력
+```
+<br/>
+
+### Tag 찾기: find, find_all
+> * Tag 위주 찾기, 클래스나 ID로도 찾을 수 있지만 이 경우는 select가 더 편해보임
+> * find : 같은 조건 중 가장 먼저 찾은 하나만 추출
+> * find_all : 같은 조건 모두 추출
+> * find 계열에서 class를 지칭할 때 .을 사용하지 않음.
+```python
+# find 계열에서 class를 지칭할 때 .을 사용하지 않음.
+
+# 데이터 추출
+soup.find('li', {'id': 'c'}).text                           # Tag와 ID 조합 검색
+soup.find('ul', {'class': 'greet'}).string                  # Tag와 class 조합 검색(클래스명 앞에 .을 붙이지 않음)
+soup.find('ul', 'greet').get_text()                         # 위와 같은 결과(대상을 class에서 'greet'가 있는것을 참조)
+
+soup.body.h1.div.p['id']                                    # 해당 tag의 ID값 추출(문자열, ID는 고유하기 때문)
+soup.find_all('p')[0]['id']                                 # 가장 먼저 나오는 p tag의 id값 추출
+soup.find_all('p')[-1].find('span')['class']                # 해당 tag의 class값 추출(리스트, 클래스는 여러개 올 수 있음)
+
+soup.body.div.span.text                                     # Tag만으로 추출(head, body는 최상위 tag)
+
+soup.find_all('p')[-1].find('span')                         # 아래 5개의 last_price는 모두 동일한 값을 찾는다
+soup.find_all('p')[-1].find_all('span')[0]
+soup.find_all('p')[-1].find_all('span', 'price')[0]         # price는 class
+soup.find_all('p')[-1].find_all('span', {'class': 'price'})[0]
+soup.find_all('span', {'class': 'price'})[-1]
+
+soup.find_all(['p', 'img'])                                 # 여러 태그를 검색할 경우에는 리스트 형태로 인자를 제공
+
+# 데이터 조작
+div_list = soup.findAll('div')                              # findAll도 유사하게 동작
+for div in div_list:                                        # 모든 div 아래 있는 모든 span을 대상으로 
+    for span in div.find_all('span'):                       # 작업하는 방법
+        print(span.text)
+
+for li in soup.body.ul.li.next_siblings:                    # Tag로 찾아서 다음 형제들 찾기
+    print(li)
+for li in soup.find('li', {'id': 'c'}).previous_siblings:   # Tag + ID로 이전 형제들 찾기
+    print(li)
+
+# 번외
+p_text = [p.text.strip() for p in soup.find_all('p')]       # find_all 결과물 처리 방법
 ```
 <br/>
 
@@ -131,23 +142,23 @@ with open('data/Test05.html', 'r', encoding='utf-8') as html_file:
 > * select_one : 같은 조건 중 가장 먼저 찾은 하나만 추출
 > * select : 같은 조건 모두 추출
 ```python
-    print(soup.select('p'))                                   # tag가 p인 모든 항목 추출
-    print(soup.select_one('p'))                               # tag가 p인 첫번째 항목 추출
-    
-    print(soup.find_all('p', {'class': 'name1'}))             # find_all을 이용한 p tag중 class가 'name1'인 모든 항목 추출
-    print(soup.select('p.name1'))                             # select를 이용한 위와 동일한 처리
-    
-    print(soup.select('.price'))                              # class가 'price'인 모든 항목
-    print(soup.select('#fruits2'))                            # id가 'fruits2'인 모든 항목
-    
-    print(soup.select('p > span'))                            # p tag 아래에 있는 모든 span tag(p가 span의 부모일때만 가능 할아버지 이상의 조상이면 안됨)
-    print(soup.select('#fruits2 > .store'))                   # 특정 조건의 태그 아래 특정 class 대상 추출
-    
-    print(soup.select('#fruits2 > .store')[0].text)           # select의 모든 결과는 리스트이기 때문에 [x] 배열로 처리해야 함
-    
-    print(soup.select('span[class]'))                         # class가 있는 모든 span 추출
-    print(soup.select('span[class="count"]'))                 # class가 'count'인 모든 span 추출
-    
-    print(soup.select('a[href]')[0].text)                     # href가 있는 a tag 중 첫번째 tag의 text 추출
-    print(soup.select('a[href]')[0]["href"])                  # href가 있는 a tag 중 첫번째 tag의 속성 href의 값 추출(주소값 추출)
+ soup.select('p')                          # tag가 p인 모든 항목 추출
+ soup.select_one('p')                      # tag가 p인 첫번째 항목 추출
+
+ soup.find_all('p', {'class': 'name1'})    # find_all을 이용한 p tag중 class가 'name1'인 모든 항목 추출
+ soup.select('p.name1')                    # select를 이용한 위와 동일한 처리
+
+ soup.select('.price')                     # class가 'price'인 모든 항목
+ soup.select('#fruits2')                   # id가 'fruits2'인 모든 항목
+
+ soup.select('p > span')                   # p tag 아래에 있는 모든 span tag(p가 span의 부모일때만 가능 할아버지 이상의 조상이면 안됨)
+ soup.select('#fruits2 > .store')          # 특정 조건의 태그 아래 특정 class 대상 추출
+
+ soup.select('#fruits2 > .store')[0].text  # select의 모든 결과는 리스트이기 때문에 [x] 배열로 처리해야 함
+
+ soup.select('span[class]')                # class가 있는 모든 span 추출
+ soup.select('span[class="count"]')        # class가 'count'인 모든 span 추출
+
+ soup.select('a[href]')[0].text            # href가 있는 a tag 중 첫번째 tag의 text 추출
+ soup.select('a[href]')[0]["href"]         # href가 있는 a tag 중 첫번째 tag의 속성 href의 값 추출(주소값 추출)
 ```
