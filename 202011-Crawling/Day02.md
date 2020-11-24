@@ -6,7 +6,7 @@
 ## HTML 문서 수집 모듈
 <br/>
 
-### requests
+### requests : 서비스 모듈
 #### encoding: 2가지
 > * UTF-8 : 조합형(초성, 중성, 종성을 분리해 코드화) => 현재의 Web에서 지원
 > * EUC-KR : 한글 완성형 방식
@@ -35,7 +35,7 @@ result = req.post(url, data=data)
 ```
 <br/>
 
-### urllib
+### urllib : 내장 모듈
 > * 멤버 항목을 보유하고 있음
 ```python
 from urllib.request import urlopen, Request
@@ -63,10 +63,14 @@ print(html.info().get_content_charset())
 >   * requests : 에러 표현을 않함(내용이 없는 것 등으로 확인)
 >   * urllib : 에러를 표현 함
 
+<br/><br/><br/>
 
 ## Beautiful Soup 수집
 <br/>
 
-### 용어 정리
-#### Crawling
-> * Web page에서 정보를 수집하는것
+### 기본
+> * 파싱(Parsing) 모듈
+> * 파서(Parser)
+>   * lxml
+>   * html5lib
+>   * html.parser - 가장 많이 사용
