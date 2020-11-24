@@ -87,6 +87,7 @@ print(html.info().get_content_charset())
 
 ### 파일 읽기
 ```python
+# 파일에서 읽기
 from bs4 import BeautifulSoup
 
 with open('data/Test05.html', 'r', encoding='utf-8') as html_file:
@@ -94,6 +95,15 @@ with open('data/Test05.html', 'r', encoding='utf-8') as html_file:
     soup = BeautifulSoup(html, 'html.parser')
     
     print(soup)                            # 전체 출력
+    
+# Web에서 직접 읽기
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+
+web_url = 'https://www.naver.com'
+with urlopen(web_url) as response:
+    html = response.read()
+    soup = BeautifulSoup(html, 'html.parser')
 ```
 <br/>
 
