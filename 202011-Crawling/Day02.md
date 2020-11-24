@@ -1,7 +1,7 @@
 # Day 2.
 <br/>
 
-<img src="https://user-images.githubusercontent.com/31339365/91451251-32ac4a80-e8b8-11ea-805f-eafada070d80.png" width="70%"></img>
+<img src="https://user-images.githubusercontent.com/31339365/100090897-3ccded00-2e97-11eb-8393-8979599c8f49.png" width="70%"></img>
 
 <br/><br/>
 
