@@ -1,18 +1,18 @@
 # Day 1.
 
-<br/><br/>
-## 전체 과정 소개
-###### Python Data Type - 기초, 데이터 정체/분석용 위주
-###### 중소기업 사례 
-###### Web Service - request, response
-###### Web Data 수집 - Crawling, 스크레이핑
-###### Web Data 구조 - HTML, CSS, Javascript
-###### BS4(Beautiful Shup), Selenium  사용법
-###### Web Data 파일 내용 추출
-###### Web Data 수집
-###### (Web) Data 정제
-###### Web Browser Driver(Chrome Driver)
-###### Portal API => Data 추출
+<br/>
+> **전체 과정 소개:** <br/>
+> * Python Data Type - 기초, 데이터 정체/분석용 위주
+> * 중소기업 사례 
+> * Web Service - request, response
+> * Web Data 수집 - Crawling, 스크레이핑
+> * Web Data 구조 - HTML, CSS, Javascript
+> * BS4(Beautiful Shup), Selenium  사용법
+> * Web Data 파일 내용 추출
+> * Web Data 수집
+> * (Web) Data 정제
+> * Web Browser Driver(Chrome Driver)
+> * Portal API => Data 추출
 
 <br/><br/>
 
