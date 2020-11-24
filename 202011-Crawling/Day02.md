@@ -1,6 +1,8 @@
 # Day 2.
 <br/>
 
+<img src="https://user-images.githubusercontent.com/31339365/91451251-32ac4a80-e8b8-11ea-805f-eafada070d80.png" width="70%"></img>
+
 <br/><br/>
 
 ## HTML 문서 수집 모듈
