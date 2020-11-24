@@ -55,6 +55,9 @@
 > * Cascading Style Sheets 
 > * <style> ~ </style>
 > * #: ID, .: class
+> **xpath(XML path language):**
+>   * xpath는 xml문서의 특정 부분의 위치를 찾을 때 사용하는 언어
+>   * xpath는 xml문서 안의 요소와 속성들을 탐색함
 #### Javascript: Web Page의 기능을 넣어주는 역할
 > * **DOM(Document Object Model)을 이용함(중요)**
 > * DOM: HTML문서 객체
