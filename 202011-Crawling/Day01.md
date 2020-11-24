@@ -14,10 +14,10 @@
 ###### Web Browser Driver(Chrome Driver)
 ###### Portal API => Data 추출
 
-<br/>
+<br/><br/>
 
 ## Web Data 수집
-<br/><br/>
+<br/>
 
 ### 용어 정리
 <br/>
@@ -29,7 +29,7 @@
 
 #### 스크레이핑
 > * Web page에서 수집한 데이터에서 필요한 정보를 추출 하는것
-<br/><br/>
+<br/>
 
 ### 기타
 <br/>
