@@ -36,3 +36,24 @@
 ##### wget
 <pre>wget 'https://www.hanbit.co.kr/store/books/full_book_list.html' -outfile 'full_book_list.txt'</pre>
 
+<br/><br/>
+
+## Web Service
+<br/>
+
+### 기본 작동 원리
+> * Client 요청(request)에 Server가 응답(response)하는 방식으로 작동
+> * Client와 Server간에는 HyperLink문서를 HTTP protocol을 이용해 요청 및 제공
+<br/>
+
+### Web Page(Hypertext) 구조
+#### HTML: Web page의 레이아웃과 내용을 채워주는 역할
+> **HTML vs XML(Extensible Markup Language)**
+> * 공통점: 인터넷을 통해 데이터를 주고 받을 수 있고 브라우저에서 볼 수 있음
+> * 차이점: HTML은 공통 규약으로 정의된 Tag를 사용하고, XML은 사용자 정의 형태로 생각하면 됨
+#### CSS: Web page를 꾸미는 역할
+> * Cascading Style Sheets 
+#### Javascript: Web Page의 기능을 넣어주는 역할
+<br/>
+
+### HTTP: Web protocol
