@@ -53,7 +53,15 @@
 > * 차이점: HTML은 공통 규약으로 정의된 Tag를 사용하고, XML은 사용자 정의 형태로 생각하면 됨
 #### CSS: Web page를 꾸미는 역할
 > * Cascading Style Sheets 
+> * <style> ~ </style>
+> * #: ID, .: class
 #### Javascript: Web Page의 기능을 넣어주는 역할
+> * **DOM(Document Object Model)을 이용함(중요)**
+> * DOM: HTML문서 객체
+>   * document.getElementById/Class('값') : 함수 이용
+> * BOM(Browser Object Model)
+#### Web 렌더링(Javascript+HTML+CSS Mix)
+> * Javascript가 먼저 해석되고, DOM으로 해석된 HTML에 붙여가는 것
 <br/>
 
 ### HTTP: Web protocol
