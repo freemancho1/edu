@@ -84,9 +84,10 @@ print(html.info().get_content_charset())
 <br/>
 
 ### Tag 찾기: find, find_all
-> Tag 위주 찾기, 클래스나 ID로도 찾을 수 있지만 이 경우는 select가 더 편해보임
-> find : 같은 조건 중 가장 먼저 찾은 하나만 추출
-> find_all : 같은 조건 모두 추출
+> * Tag 위주 찾기, 클래스나 ID로도 찾을 수 있지만 이 경우는 select가 더 편해보임
+> * find : 같은 조건 중 가장 먼저 찾은 하나만 추출
+> * find_all : 같은 조건 모두 추출
+> * find 계열에서 class를 지칭할 때 .을 사용하지 않음.
 ```python
 from bs4 import BeautifulSoup
 
@@ -126,6 +127,27 @@ with open('data/Test05.html', 'r', encoding='utf-8') as html_file:
 ```
 <br/>
 
-### CSS Selector: select, select_one
-> select_one : 같은 조건 중 가장 먼저 찾은 하나만 추출
-> select : 같은 조건 모두 추출
+### CSS Selector를 이용한 찾기: select, select_one
+> * select_one : 같은 조건 중 가장 먼저 찾은 하나만 추출
+> * select : 같은 조건 모두 추출
+```python
+    print(soup.select('p'))                                   # tag가 p인 모든 항목 추출
+    print(soup.select_one('p'))                               # tag가 p인 첫번째 항목 추출
+    
+    print(soup.find_all('p', {'class': 'name1'}))             # find_all을 이용한 p tag중 class가 'name1'인 모든 항목 추출
+    print(soup.select('p.name1'))                             # select를 이용한 위와 동일한 처리
+    
+    print(soup.select('.price'))                              # class가 'price'인 모든 항목
+    print(soup.select('#fruits2'))                            # id가 'fruits2'인 모든 항목
+    
+    print(soup.select('p > span'))                            # p tag 아래에 있는 모든 span tag(p가 span의 부모일때만 가능 할아버지 이상의 조상이면 안됨)
+    print(soup.select('#fruits2 > .store'))                   # 특정 조건의 태그 아래 특정 class 대상 추출
+    
+    print(soup.select('#fruits2 > .store')[0].text)           # select의 모든 결과는 리스트이기 때문에 [x] 배열로 처리해야 함
+    
+    print(soup.select('span[class]'))                         # class가 있는 모든 span 추출
+    print(soup.select('span[class="count"]'))                 # class가 'count'인 모든 span 추출
+    
+    print(soup.select('a[href]')[0].text)                     # href가 있는 a tag 중 첫번째 tag의 text 추출
+    print(soup.select('a[href]')[0]["href"])                  # href가 있는 a tag 중 첫번째 tag의 속성 href의 값 추출(주소값 추출)
+```
