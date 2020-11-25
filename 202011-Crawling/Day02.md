@@ -12,7 +12,7 @@
 #### encoding: 2가지
 > * UTF-8 : 조합형(초성, 중성, 종성을 분리해 코드화) => 현재의 Web에서 지원
 > * EUC-KR : 한글 완성형 방식
->   * 확장된 ANSI : Excel
+>   * 확장된 ANSI : Excel  encoding='CP949'
 ##### web페이지의 encoding 확인
 ```python
 import requests as req
