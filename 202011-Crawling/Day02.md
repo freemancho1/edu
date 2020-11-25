@@ -132,7 +132,10 @@ soup.find_all('p')[-1].find_all('span', 'price')[0]         # price는 class
 soup.find_all('p')[-1].find_all('span', {'class': 'price'})[0]
 soup.find_all('span', {'class': 'price'})[-1]
 
-soup.find_all(['p', 'img'])                                 # 여러 태그를 검색할 경우에는 리스트 형태로 인자를 제공
+# find_all(tag_name, attr, recursive, string, limit, **kwargs)
+soup.find_all(['p', 'img'])                                 # 여러 태그를 검색할 경우에는 리스트 형태로 하나의 인자를 제공
+soup.find_all('p', 'price')                                 # 위와 차이점은 리스트가 아닌 각각의 인자다. 따라서 두번째 'price'는 attr임
+soup.find_all('p', {'id': 'fruits3'})                       # 바로 위와 같은 경우인데, 속성이 class만 'class'를 생략할 수 있음
 
 # 데이터 조작
 div_list = soup.findAll('div')                              # findAll도 유사하게 동작
