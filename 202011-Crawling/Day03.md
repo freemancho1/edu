@@ -51,4 +51,9 @@
 > * {m, n} : 문자가 m회 부터 n회까지 반복
 > * {m, } : 문자가 m회 이상 반복
 > * '\\' : 특수문자 표시
+<br/><br/>
 
+## Python으로 스크레이핑 하는 단계
+> * 1단계: fetch(url)
+> * 2단계: scrape(html)
+> * 3단계: save(db_path, books)
