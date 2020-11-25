@@ -177,3 +177,16 @@ p_text = [p.text.strip() for p in soup.find_all('p')]       # find_all 결과물
  soup.select('a[href]')[0].text            # href가 있는 a tag 중 첫번째 tag의 text 추출
  soup.select('a[href]')[0]["href"]         # href가 있는 a tag 중 첫번째 tag의 속성 href의 값 추출(주소값 추출)
 ```
+<br/>
+
+### 불필요한 부분 제거: extract()
+> * tag path나 find()를 이용해 해당 태그를 찾은 후 삭제함
+> * find_all(), select()를 이용한 경우 for문에서 각각 처리해줌
+```python
+a = soup.body.extract()                     # soup에서 body 부분을 삭제해 soup에 저장하고 삭제된 body부분은 a에 저장함
+a = soup.find('p', 'price').extract()       # 조건에 맞는 p tag 삭제
+
+for tag in soup.select('p'):                # 조건의 결과가 리스트면, for문으로 처리
+    tag.extract()                           # 리스트 일괄처리는 없는듯;;
+del_tag = [tag.extract() for tag in soup.select('p')] # 결과도 받을 수 있음    
+```  
