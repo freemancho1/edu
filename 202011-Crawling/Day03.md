@@ -27,6 +27,8 @@
 > * match : 문자열의 처음에서 매칭되는 부분 검색
 > * findall : 문자열 전체에서 매칭되는 모든 문자열을 리스트로 반환
 > * finditer : findall과 같은데 iterator 객체로 반환
+> * sub : re.sub(a, b, c) - c의 문자열에서 a를 b로 변경한 값 
+> * split : re.split(a, b) - b 문자열을 a로 분리한 리스트 리턴
 
 ##### 메서드 함수
 > * group() : 매칭된 문자열 반환
@@ -112,12 +114,144 @@ print(re.search('\W+', test).group())                     # ' ' (공백 1개)
 test = '홍길동은 2001년 4월 27일에 태어남'
 print(re.findall('\d', test))                             # ['2','0','0',...]
 print(re.findall('\d+', test))                            # ['2001', '4', '27']
+print(re.findall('\d{2}', test))                          # ['20', '01', '27']
+re_pattern = re.compile('\d{2}')                          # 아래 두줄의 결과와 위의 결과는 동일
+print(re_pattern.findall(test))                           
+# {m} - m자리수, {m,n} - m ~ n 자리수, {m,} - m 과 같거나 큰 자리수
+# 자리수가 정해지면 해당 자리수만 가져옴, 바로 위 소스코드 참조
 
-
-
+print(soup.find_all(class_=re.compile('d')))              # 클래스 값에 'd'가 포함된 요소를 찾음
+print(soup.find_all(id=re.compile('i')))                  # id 값에 'i'가 포함된 요소를 찾음
+print(soup.find_all(re.compile('t')))                     # 태그에 't'가 포함된 요소가 찾음
+print(soup.find_all(re.compile('^t')))                    # t로 시작된 태그를 찾음
+print(soup.find_all(href=re.compile('/')))                # href에 '/'이 포함된 태그를 찾음
 ```
+<br/></br><br/>
+
 
 ## Python으로 스크레이핑 하는 단계
-> * 1단계: fetch(url)
-> * 2단계: scrape(html)
-> * 3단계: save(db_path, books)
+> * 1단계: fetch(url) - 웹에서 데이터 가져오기
+> * 2단계: scrape(html) - HTML로 변환
+> * 3단계: save(db_path, books) - 원하는 형식으로 변환해 저장 
+
+<br/>
+
+### Fetch
+<br/>
+
+#### urlopen - with info().get_content_charset()
+```python
+from urllib.request import urlopen
+
+default_encoding = 'utf-8'
+target_url = 'http://www.hanbit.co.kr/store/books/full_book_list.html'
+with urlopen(target_url) as response:
+    decoding_type = response.info().get_content_charset(failobj=default_encoding)
+    html = response.read().decode(decoding_type)
+
+with open('dp.html', 'w', encoding=default_encoding) as save_file:
+    save_file.write(html)
+```
+#### urlopen - with encoding type searching
+```python
+import re
+from urllib.request import urlopen
+
+default_encoding = 'utf-8'
+target_url = 'http://www.hanbit.co.kr/store/books/full_book_list.html'
+with urlopen(target_url) as response:
+    source_content = response.read()
+
+    # ASCII 이외는 자동치환해 오류가 나오지 않게 함
+    scan_text = source_content[:1024].decode('ascii', errors='replace')
+
+    # 디코딩한 문자열에서 정규 표현식으로 charset 값을 추출합니다.
+    # 정규식 내용: 'charset=' 다음에 "' 둘중에 하나가 없거나 하나 다음부터 모든 문자와 '-'들 탐색
+    #             문자와 '-' 아닌 첫번째 만나는 ' '(공백)이나 '" 따옴표 등을 만날때 까지 검색
+    #             단, '' 따옴표 안의 문자는 나중에 빼내기 쉽게 ()를 이용해 group(1)로 지정
+    search_encoding = re.search(r'charset=["\']?([\w-]+)["\']?', scan_text)
+    print(f'search_encoding: {search_encoding}')
+    decoding_type = search_encoding.group(1) if search_encoding else default_encoding
+    print(f'decoding_type: {default_encoding}')
+
+    html = source_content.decode(decoding_type)
+
+with open('dp.html', 'w', encoding=default_encoding) as save_file:
+    save_file.write(html)
+```
+> * 주석이나 print문을 제거해도 이게 위에 있는 방법보다 더 어려워 보임
+
+<br/><br/>
+
+### Scrape
+<br/>
+
+#### HTML Scrape
+```python
+import re
+from urllib.request import urlopen
+from html import unescape
+
+default_encoding = 'utf-8'
+target_url = 'http://www.hanbit.co.kr/store/books/full_book_list.html'
+with urlopen(target_url) as response:
+    decoding_type = response.info().get_content_charset(failobj=default_encoding)
+    html = response.read().decode(decoding_type)
+
+domain_url = re.search('http[s]?://[\w\.\-_]+', target_url).group()
+result_books = []
+search_books = re.findall(r'<td class="left"><a.*?</td>', html, re.DOTALL)
+for book_info in search_books:
+    url = re.search(r'<a href="(.*?)"', book_info).group(1)
+    title = unescape(re.sub(r'<.*?>', '', book_info))
+    result_books.append({'url': domain_url+url, 'title': title})
+```
+### RSS(XML) Scrape
+```python
+from xml.etree import ElementTree
+
+tree = ElementTree.parse('rss.xml')
+root = tree.getroot()
+
+result_weather = []
+for item in root.findall('channel/item/description/body/location/data'):
+    weather_info = {
+        'datetime': item.find('tmEf').text,
+        'min_temp': item.find('tmn').text,
+        'max_temp': item.find('tmx').text,
+        'weather' : item.find('wf').text
+    }
+    result_weather.append(weather_info)
+```
+<br/><br/>
+
+### Save
+<br/>
+
+#### Using CSV with list
+```python
+import csv
+
+with open('top_cities_2.csv', 'w', newline='', encoding='utf-8') as f:
+    writer = csv.writer(f)    
+    writer.writerow(['rank', 'city', 'population'])  
+    writer.writerows(some_list)
+```
+#### Using CSV with dict
+```python
+import csv
+
+with open('top_cities_dict.csv', 'w', newline='', encoding='utf-8') as f:
+    writer = csv.DictWriter(f, ['rank', 'city', 'population']) 
+    writer.writeheader()
+    writer.writerows(some_dict_list)
+```
+#### Using CSV with json
+```python
+import json
+
+with open('top_cities_3.json','w', encoding='utf-8') as f:     
+    json.dump(some_dict_list,f)
+```
+#### 기타
+> * Excel, Text, DBMS에 저장하는 방법들이 있으나, 구글링 활용
