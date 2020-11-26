@@ -181,6 +181,28 @@ with open('dp.html', 'w', encoding=default_encoding) as save_file:
 ```
 > * 주석이나 print문을 제거해도 이게 위에 있는 방법보다 더 어려워 보임
 
+#### requests
+> * 가끔 urllib로 하다 오류가 나는 오토봇 접속이라 차단 당할 때 사용
+```python
+import requests
+from bs4 import BeautifulSoup
+from html import unescape
+
+target_url = "https://news.naver.com/"
+
+# 404 에러 발생
+# target_url = 'https://www.naver.com'
+# with urlopen(target_url) as response:
+# 404 에러 조치 방법
+headers = {"User-Agent": "Mozilla/5.0"}
+html = requests.get(target_url,headers=headers)
+
+soup = BeautifulSoup(html.text,'html.parser')
+source_tag = soup.find('ul', 'hdline_article_list').find_all('div', 'hdline_article_tit')
+for tag in source_tag:
+    print(unescape(tag.find('a').text).strip())
+```
+
 <br/><br/>
 
 ### Scrape
